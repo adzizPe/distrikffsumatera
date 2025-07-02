@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF Store Sumatera - Gaming Shop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"><defs><radialGradient id="explosion" cx="50%" cy="50%" r="50%"><stop offset="0%" style="stop-color:%23ff4757;stop-opacity:0.8" /><stop offset="100%" style="stop-color:%23000;stop-opacity:1" /></radialGradient><linearGradient id="smoke" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23333;stop-opacity:0.6" /><stop offset="100%" style="stop-color:%23000;stop-opacity:1" /></radialGradient></defs><rect width="100%" height="100%" fill="url(%23smoke)"/><circle cx="200" cy="300" r="80" fill="%23ff4757" opacity="0.4"/><circle cx="1700" cy="200" r="60" fill="%23ff6b35" opacity="0.5"/><circle cx="1500" cy="800" r="100" fill="%23ff4757" opacity="0.3"/><polygon points="100,900 200,800 300,900 200,1000" fill="%23ff6b35" opacity="0.2"/><polygon points="1600,100 1700,50 1800,100 1700,150" fill="%23ff4757" opacity="0.3"/></svg>') center/cover fixed,
+                    linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #ff4757 100%);
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Background Animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 71, 87, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 107, 53, 0.1) 0%, transparent 40%),
+                linear-gradient(45deg, transparent 70%, rgba(255, 71, 87, 0.05) 100%);
+        }
+
+        .bg-animation::before {
+            content: '💰';
+            position: absolute;
+            font-size: 4rem;
+            animation: float 3s ease-in-out infinite;
+            top: 15%;
+            left: 8%;
+            color: #4ecdc4;
+            filter: drop-shadow(0 0 10px #4ecdc4);
+        }
+
+        .bg-animation::after {
+            content: '💎';
+            position: absolute;
+            font-size: 3rem;
+            animation: sparkle 4s ease-in-out infinite;
+            top: 70%;
+            right: 10%;
+            color: #ff6b35;
+            filter: drop-shadow(0 0 8px #ff6b35);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+            50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid #ff4757;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 3%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo span {
+            color: #ff4757;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 0;
+            background: rgba(255, 71, 87, 0.1);
+            border-radius: 8px;
+            padding: 0.5rem;
+        }
+
+        .nav-links li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-links li a:hover,
+        .nav-links li a.active {
+            background: #ff4757;
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(255, 71, 87, 0.3);
+        }
+
+        .cart-icon {
+            position: relative;
+            background: linear-gradient(45deg, #ff4757, #ff6b35);
+            padding: 0.8rem;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #4ecdc4;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            padding: 2rem 3%;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .store-hero {
+            text-align: center;
+            padding: 3rem 0;
+            background: rgba(255, 71, 87, 0.1);
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .store-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ff6b35, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .store-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        /* Filter & Search */
+        .store-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-tab.active,
+        .filter-tab:hover {
+            background: #ff6b35;
+            border-color: #ff6b35;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 0.8rem 1.5rem;
+            padding-right: 3rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            border-radius: 25px;
+            color: #fff;
+            font-size: 1rem;
+            width: 300px;
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #4ecdc4;
+            box-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4ecdc4;
+        }
+
+        /* Product Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b35, #4ecdc4);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.2);
+            border-color: #ff6b35;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(135deg, #ff4757, #4ecdc4);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover .product-image::after {
+            opacity: 1;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #4ecdc4;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .product-badge.hot {
+            background: #ff4757;
+        }
+
+        .product-badge.new {
+            background: #4ecdc4;
+        }
+
+        .product-badge.sale {
+            background: #ff6b35;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .product-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .price-current {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #4ecdc4;
+        }
+
+        .price-original {
+            text-decoration: line-through;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+        }
+
+        .discount {
+            background: #ff4757;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .buy-button {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(45deg, #ff4757, #ff6b35);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .buy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 71, 87, 0.4);
+        }
+
+        .buy-button:active {
+            transform: translateY(0);
+        }
+
+        /* Featured Products */
+        .featured-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #ff6b35, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .featured-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 2rem;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 107, 53, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255, 107, 53, 0.1), transparent);
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .featured-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Cart Modal */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .cart-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(26, 26, 46, 0.95);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid #ff6b35;
+            max-width: 500px;
+            width: 90%;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 107, 53, 0.3);
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: #ff6b35;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-cart:hover {
+            background: rgba(255, 107, 53, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cart-total {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 2px solid #ff6b35;
+        }
+
+        .checkout-button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(45deg, #4ecdc4, #ff6b35);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .checkout-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(78, 205, 196, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 3rem 3%;
+            text-align: center;
+            border-top: 2px solid #ff6b35;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #ff6b35, #4ecdc4);
+            border-radius: 50%;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-5px) rotate(360deg);
+            box-shadow: 0 10px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 5%;
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                order: 3;
+                flex-basis: 100%;
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .store-hero h1 {
+                font-size: 2rem;
+            }
+
+            main {
+                padding: 2rem 5%;
+            }
+
+            .store-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .featured-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-content {
+                width: 95%;
+                margin: 1rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #ff6b35;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(45deg, #4ecdc4, #ff6b35);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(78, 205, 196, 0.3);
+            transform: translateX(400px);
+            transition: all 0.3s ease;
+            z-index: 1500;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <span>🔥</span> FF <span>SUMATERA</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="listevent.html">List Event</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="store.html" class="active">Store</a></li>
+                <li><a href="#redeem">Kode Redeem</a></li>
+            </ul>
+            <div class="cart-icon" onclick="openCart()">
+                🛒
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="store-hero">
+            <h1>🏪 FF Store Sumatera</h1>
+            <p>Dapatkan Diamond, Elite Pass, dan Item Eksklusif dengan Harga Terbaik!</p>
+            <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
+                <div style="background: rgba(78, 205, 196, 0.2); padding: 1rem 2rem; border-radius: 15px;">
+                    <div style="font-size: 1.5rem; font-weight: bold; color: #4ecdc4;">💎 Instant</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">Auto Delivery</div>
+                </div>
+                <div style="background: rgba(255, 107, 53, 0.2); padding: 1rem 2rem; border-radius: 15px;">
+                    <div style="font-size: 1.5rem; font-weight: bold; color: #ff6b35;">🔒 Secure</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">100% Safe</div>
+                </div>
+                <div style="background: rgba(255, 71, 87, 0.2); padding: 1rem 2rem; border-radius: 15px;">
+                    <div style="font-size: 1.5rem; font-weight: bold; color: #ff4757;">⭐ Best Price</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">Member Discount</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="store-controls">
+            <div class="filter-tabs">
+                <div class="filter-tab active" data-category="all">Semua</div>
+                <div class="filter-tab" data-category="diamond">Diamond</div>
+                <div class="filter-tab" data-category="pass">Elite Pass</div>
+                <div class="filter-tab" data-category="skin">Skin & Bundle</div>
+                <div class="filter-tab" data-category="special">Special Items</div>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="Cari produk..." id="searchInput">
+                <span class="search-icon">🔍</span>
+            </div>
+        </section>
+
+        <section class="featured-section">
+            <h2 class="section-title">⭐ Penawaran Terbaik</h2>
+            <div class="featured-grid">
+                <div class="featured-card">
+                    <div class="featured-content">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #ff6b35;">💎 Diamond Bundle Sumatera</h3>
+                        <p style="margin-bottom: 1rem; opacity: 0.8;">Paket Diamond eksklusif untuk member FF Sumatera dengan bonus item langka!</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <span style="font-size: 1.5rem; color: #4ecdc4; font-weight: bold;">Rp 299.000</span>
+                                <span style="text-decoration: line-through; opacity: 0.6; margin-left: 0.5rem;">Rp 399.000</span>
+                            </div>
+                            <button class="buy-button" style="width: auto; padding: 0.8rem 2rem;" onclick="addToCart('Diamond Bundle Sumatera', 299000, '💎')">Beli Sekarang</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="featured-card">
+                    <div class="featured-content">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #4ecdc4;">🎯 Elite Pass Season</h3>
+                        <p style="margin-bottom: 1rem; opacity: 0.8;">Elite Pass season terbaru dengan skin eksklusif dan reward melimpah!</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <span style="font-size: 1.5rem; color: #4ecdc4; font-weight: bold;">Rp 149.000</span>
+                                <span style="background: #ff4757; color: white; padding: 0.2rem 0.5rem; border-radius: 8px; font-size: 0.8rem; margin-left: 0.5rem;">25% OFF</span>
+                            </div>
+                            <button class="buy-button" style="width: auto; padding: 0.8rem 2rem;" onclick="addToCart('Elite Pass Season', 149000, '🎯')">Beli Sekarang</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">🛍️ Semua Produk</h2>
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Memuat produk...</p>
+            </div>
+            <div class="products-grid" id="productsGrid">
+                <!-- Diamond Products -->
+                <div class="product-card" data-category="diamond">
+                    <div class="product-badge hot">HOT</div>
+                    <div class="product-image">💎</div>
+                    <div class="product-title">Diamond 100</div>
+                    <div class="product-description">100 Diamond + 10 Bonus Diamond untuk member baru</div>
+                    <div class="product-price">
+                        <span class="price-current">Rp 15.000</span>
+                        <span class="price-original">Rp 20.000</span>
+                        <span class="discount">25% OFF</span>
+                    </div>
+                    <button class="buy-button" onclick="addToCart('Diamond 100', 15000, '💎')">Beli Sekarang</button>
+                </div>
+
+                <div class="product-card" data-category="diamond">
+                    <div class="product-badge">POPULER</div>
+                    <div class="product-image">💎</div>
+                    <div class="product-title">Diamond 310</div>
+                    <div class="product-description">310 Diamond + 31 Bonus Diamond</div>
+                    <div class="product-price">
+                        <span class="price-current">Rp 45.000</span>
+                    </div>
+                    <button class="buy-button" onclick="addToCart('Diamond 310', 45000, '💎')">Beli Sekarang</button>
+                </div>
+
+                <div class="product-card" data-category="diamond">
+                    <div class="product-badge sale">BEST VALUE</div>
+                    <div class="product-image">💎</div>
+                    <div class="product-title">Diamond 720</div>
+                    <div class="product-description">720 Diamond + 72 Bonus Diamond + Gift Box</div>
+                    <div class="product-price">
+                        <span class="price-current">Rp 99.000</span>
+                        <span class="price-original">Rp 120.000</span>
+                        <span class="discount">17% OFF</span>
+                    </div>
+                    <button class="buy-button" onclick="addToCart('Diamond 720', 99000, '💎')">Beli Sekarang</button>
+                </div>
+
+                <div class="product-card" data-category="diamond">
+                    <div class="product-badge new">NEW</div>
+                    <div class="product-image">💎</div>
+                    <div class="product-title">Diamond 1450</div>
+                    <div class="product-description">1450 Diamond + 145 Bonus + Special Crate</div>
+                    <div class="product-price">
+                        <span class="price-current">Rp 189.000</span>
+                        <span class="price-original">Rp 220.000</span>
+                        <span class="discount">14% OFF</span>
+                    </div>
+                    <button class="buy-button" onclick="addToCart('Diamond 1450', 189000, '💎')">Beli Sekarang</button>
+                </div>
+
+                <div class="product-card" data-category="diamond">
+                    <div class="product-badge hot">MEGA DEAL</div>
+                    <div class="product-image">💎</div>
+                    <div class="product-title">Diamond 2180</div>
+                    <div class="product-description">2180 Diamond + 218 Bonus + Exclusive Items</div>
+                    <div class="product-price">
+                        <span class="price-current">Rp 279.000</span>
+                        <span class="price-original">Rp 330.000</span>
+                        <span class="discount">15% OFF</span>
+                    </div>
+                    <button class="buy-button" onclick="addToCart('Diamond 2180', 279000, '💎')">Beli Sekarang</button>
+                </div>
+
+                <div class="product-card" data-category="diamond">
+                    <div class="product-badge sale">ULTIMATE</div>
+                    <div class="product-image">💎</div>
+                    <div class="product-title">Diamond 5600</div>
+                    <div class="product-description">5600 Diamond + 560 Bonus + VIP Treatment</div>
+                    <div class="product-price">
+                        <span class="price-current">Rp 699.000</span>
+                        <span class="price-original">Rp 850.000</span>
+                        <span class="discount">18% OFF</span>
+                    </div>
+                    <button class="buy-button" onclick="addToCart('Diamond 5600', 699000, '💎')">Beli Sekarang</button>
+                </div>
+
+                <!-- Elite Pass Products -->
+                <div class="product-card" data-category="pass">
+                    <div class="product-badge new">SEASON 1</div>
+                    <div class="product-image">🎯</div>
+                    <div class="product-title">Elite Pass</div>
+                    <div class="product-description">Elite Pass season terbaru dengan reward eksklusif</div>
+                    <div class="product-price">
+                        <span class="price-current">Rp 149.000</span>
+                    </div>
+                    <button class="buy-button" onclick="addToCart('Elite Pass', 149000, '🎯')">Beli Sekarang</button>
+                </div>
+
+                <div class="product-card" data-category="pass">
+                    <div class="product-badge hot">PREMIUM</div>
+                    <div class="product-image">🎯</div>
+                    <div class="product-title">Elite Pass Bundle</div>
+                    <div class="product-description">Elite Pass + 25 Level Skip + Bonus Items</div>
+                    <div class="product-price">
+                        <span class="price-current">Rp 299.000</span>
+                        <span class="price-original">Rp 350.000</span>
+                        <span class="discount">15% OFF</span>
+                    </div>
+                    <button class="buy-button" onclick="addToCart('Elite Pass Bundle', 299000, '🎯')">Beli Sekarang</button>
+                </div>
+
+                <!-- Skin & Bundle Products -->
+                <div class="product-card" data-category="skin">
+                    <div class="product-badge new">LIMITED</div>
+                    <div class="product-image">🦸</div>
+                    <div class="product-title">Character Bundle Sumatera</div>
+                    <div class="product-description">Bundle karakter eksklusif dengan tema Sumatera</div>
+                    <div class="product-price">
+                        <span class="price-current">Rp 199.000</span>
+                        <span class="price-original">Rp 250.000</span>
+                        <span class="discount">20% OFF</span>
+                    </div>
+                    <button class="buy-button" onclick="addToCart('Character Bundle Sumatera', 199000, '🦸')">Beli Sekarang</button>
+                </div>
+
+                <div class="product-card" data-category="skin">
+                    <div class="product-badge hot">TRENDING</div>
+                    <div class="product-image">🔫</div>
+                    <div class="product-title">Weapon Skin Collection</div>
+                    <div class="product-description">Kumpulan skin senjata dengan efek khusus</div>
+                    <div class="product-price">
+                        <span class="price-current">Rp 129.000</span>
+                        <span class="price-original">Rp 160.000</span>
+                        <span class="discount">19% OFF</span>
+                    </div>
+                    <button class="buy-button" onclick="addToCart('Weapon Skin Collection', 129000, '🔫')">Beli Sekarang</button>
+                </div>
+
+                <div class="product-card" data-category="skin">
+                    <div class="product-badge">EXCLUSIVE</div>
+                    <div class="product-image">🚗</div>
+                    <div class="product-title">Vehicle Skin Pack</div>
+                    <div class="product-description">Skin kendaraan premium dengan desain unik</div>
+                    <div class="product-price">
+                        <span class="price-current">Rp 89.000</span>
+                    </div>
+                    <button class="buy-button" onclick="addToCart('Vehicle Skin Pack', 89000, '🚗')">Beli Sekarang</button>
+                </div>
+
+                <div class="product-card" data-category="skin">
+                    <div class="product-badge sale">MEGA BUNDLE</div>
+                    <div class="product-image">🎨</div>
+                    <div class="product-title">Complete Skin Bundle</div>
+                    <div class="product-description">Semua skin terbaru dalam satu paket hemat</div>
+                    <div class="product-price">
+                        <span class="price-current">Rp 399.000</span>
+                        <span class="price-original">Rp 500.000</span>
+                        <span class="discount">20% OFF</span>
+                    </div>
+                    <button class="buy-button" onclick="addToCart('Complete Skin Bundle', 399000, '🎨')">Beli Sekarang</button>
+                </div>
+
+                <!-- Special Items -->
+                <div class="product-card" data-category="special">
+                    <div class="product-badge hot">RARE</div>
+                    <div class="product-image">🎁</div>
+                    <div class="product-title">Mystery Box Special</div>
+                    <div class="product-description">Box berisi item langka dan eksklusif</div>
+                    <div class="product-price">
+                        <span class="price-current">Rp 59.000</span>
+                        <span class="price-original">Rp 80.000</span>
+                        <span class="discount">26% OFF</span>
+                    </div>
+                    <button class="buy-button" onclick="addToCart('Mystery Box Special', 59000, '🎁')">Beli Sekarang</button>
+                </div>
+
+                <div class="product-card" data-category="special">
+                    <div class="product-badge new">COLLECTOR</div>
+                    <div class="product-image">🏆</div>
+                    <div class="product-title">Trophy Collection</div>
+                    <div class="product-description">Koleksi trophy dan achievement badge</div>
+                    <div class="product-price">
+                        <span class="price-current">Rp 79.000</span>
+                    </div>
+                    <button class="buy-button" onclick="addToCart('Trophy Collection', 79000, '🏆')">Beli Sekarang</button>
+                </div>
+
+                <div class="product-card" data-category="special">
+                    <div class="product-badge sale">LIMITED TIME</div>
+                    <div class="product-image">⚡</div>
+                    <div class="product-title">Power-Up Package</div>
+                    <div class="product-description">Paket boost dan enhancement items</div>
+                    <div class="product-price">
+                        <span class="price-current">Rp 39.000</span>
+                        <span class="price-original">Rp 55.000</span>
+                        <span class="discount">29% OFF</span>
+                    </div>
+                    <button class="buy-button" onclick="addToCart('Power-Up Package', 39000, '⚡')">Beli Sekarang</button>
+                </div>
+
+                <div class="product-card" data-category="special">
+                    <div class="product-badge hot">SUMATERA ONLY</div>
+                    <div class="product-image">🌟</div>
+                    <div class="product-title">Sumatera Exclusive Pack</div>
+                    <div class="product-description">Item eksklusif hanya untuk member Sumatera</div>
+                    <div class="product-price">
+                        <span class="price-current">Rp 169.000</span>
+                        <span class="price-original">Rp 200.000</span>
+                        <span class="discount">15% OFF</span>
+                    </div>
+                    <button class="buy-button" onclick="addToCart('Sumatera Exclusive Pack', 169000, '🌟')">Beli Sekarang</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="featured-section">
+            <h2 class="section-title">💬 Testimoni Customer</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 2rem; border-radius: 20px; border: 1px solid rgba(78, 205, 196, 0.2);">
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(45deg, #4ecdc4, #ff6b35); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">👤</div>
+                        <div>
+                            <div style="font-weight: bold; color: #4ecdc4;">RajaFF_Medan</div>
+                            <div style="font-size: 0.9rem; opacity: 0.7;">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                    <p style="opacity: 0.8; line-height: 1.5;">"Diamond langsung masuk, pelayanan cepat! Sudah berlangganan di sini dari 2023. Recommended banget!"</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 2rem; border-radius: 20px; border: 1px solid rgba(255, 107, 53, 0.2);">
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(45deg, #ff6b35, #ff4757); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">👤</div>
+                        <div>
+                            <div style="font-weight: bold; color: #ff6b35;">QueenGamer_PLG</div>
+                            <div style="font-size: 0.9rem; opacity: 0.7;">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                    <p style="opacity: 0.8; line-height: 1.5;">"Harga paling murah se-Sumatera! Elite Pass bundle-nya worth it banget. Customer service ramah lagi!"</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 2rem; border-radius: 20px; border: 1px solid rgba(255, 71, 87, 0.2);">
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <div style="width: 50px; height: 50px; background: linear-gradient(45deg, #ff4757, #4ecdc4); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem;">👤</div>
+                        <div>
+                            <div style="font-weight: bold; color: #ff4757;">ProPlayer_BTM</div>
+                            <div style="font-size: 0.9rem; opacity: 0.7;">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                    <p style="opacity: 0.8; line-height: 1.5;">"Transaksi aman 100%! Udah beli diamond berkali-kali, gak pernah ada masalah. Top deh!"</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h3 style="color: #ff6b35; margin: 0;">🛒 Keranjang Belanja</h3>
+                <button class="close-cart" onclick="closeCart()">✕</button>
+            </div>
+            <div id="cartItems">
+                <p style="text-align: center; opacity: 0.7; padding: 2rem;">Keranjang kosong</p>
+            </div>
+            <div class="cart-total">
+                <h3 style="color: #4ecdc4; margin-bottom: 1rem;">Total: <span id="cartTotal">Rp 0</span></h3>
+                <button class="checkout-button" onclick="checkout()">Checkout Sekarang</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <span id="notificationText"></span>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="#">IG</a>
+                <a href="#">TT</a>
+                <a href="#">YT</a>
+                <a href="#">DC</a>
+                <a href="#">WA</a>
+            </div>
+            <p>&copy; 2025 FF Store Sumatera. All rights reserved.</p>
+            <p>🔒 Transaksi Aman | ⚡ Instant Delivery | 💬 Customer Support 24/7</p>
+            <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                <span style="color: #4ecdc4;">📞 CS: +62-812-3456-7890</span>
+                <span style="color: #ff6b35;">📧 store@ffsumatera.com</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Cart functionality
+        let cart = [];
+        let cartTotal = 0;
+
+        function addToCart(name, price, emoji) {
+            const existingItem = cart.find(item => item.name === name);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    name: name,
+                    price: price,
+                    emoji: emoji,
+                    quantity: 1
+                });
+            }
+            
+            updateCartDisplay();
+            showNotification(`${emoji} ${name} ditambahkan ke keranjang!`);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartDisplay();
+            showNotification('Item dihapus dari keranjang');
+        }
+
+        function updateCartDisplay() {
+            const cartCount = document.getElementById('cartCount');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotalElement = document.getElementById('cartTotal');
+            
+            // Update cart count
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            // Update cart total
+            cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotalElement.textContent = formatCurrency(cartTotal);
+            
+            // Update cart items display
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; opacity: 0.7; padding: 2rem;">Keranjang kosong</p>';
+            } else {
+                cartItems.innerHTML = cart.map((item, index) => `
+                    <div class="cart-item">
+                        <div>
+                            <div style="font-weight: bold; color: #fff;">${item.emoji} ${item.name}</div>
+                            <div style="font-size: 0.9rem; opacity: 0.7;">Qty: ${item.quantity} | ${formatCurrency(item.price)}</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span style="color: #4ecdc4; font-weight: bold;">${formatCurrency(item.price * item.quantity)}</span>
+                            <button style="background: #ff4757; border: none; color: white; width: 25px; height: 25px; border-radius: 50%; cursor: pointer;" onclick="removeFromCart(${index})">×</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function formatCurrency(amount) {
+            return 'Rp ' + amount.toLocaleString('id-ID');
+        }
+
+        function openCart() {
+            document.getElementById('cartModal').style.display = 'block';
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showNotification('Keranjang masih kosong!');
+                return;
+            }
+            
+            // Simulate checkout process
+            showNotification('Mengarahkan ke halaman pembayaran...');
+            
+            setTimeout(() => {
+                const orderSummary = cart.map(item => 
+                    `${item.emoji} ${item.name} (${item.quantity}x) - ${formatCurrency(item.price * item.quantity)}`
+                ).join('\n');
+                
+                const message = `Halo! Saya ingin memesan:\n\n${orderSummary}\n\nTotal: ${formatCurrency(cartTotal)}\n\nMohon diproses ya! 😊`;
+                const whatsappUrl = `https://wa.me/6281234567890?text=${encodeURIComponent(message)}`;
+                
+                window.open(whatsappUrl, '_blank');
+                
+                // Clear cart after checkout
+                cart = [];
+                updateCartDisplay();
+                closeCart();
+                showNotification('Terima kasih! Pesanan akan diproses segera.');
+            }, 1500);
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Filter functionality
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const productCards = document.querySelectorAll('.product-card');
+
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                filterTabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                const category = tab.dataset.category;
+                
+                productCards.forEach(card => {
+                    if (category === 'all' || card.dataset.category === category) {
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 100);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            productCards.forEach(card => {
+                const title = card.querySelector('.product-title').textContent.toLowerCase();
+                const description = card.querySelector('.product-description').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Close cart when clicking outside
+        document.getElementById('cartModal').addEventListener('click', (e) => {
+            if (e.target.id === 'cartModal') {
+                closeCart();
+            }
+        });
+
+        // Smooth loading animation
+        window.addEventListener('load', () => {
+            const loading = document.getElementById('loading');
+            const productsGrid = document.getElementById('productsGrid');
+            
+            loading.style.display = 'block';
+            productsGrid.style.display = 'none';
+            
+            setTimeout(() => {
+                loading.style.display = 'none';
+                productsGrid.style.display = 'grid';
+                
+                // Animate products appearing
+                productCards.forEach((card, index) => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(30px)';
+                    
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.5s ease';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, index * 100);
+                });
+            }, 1000);
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Apply scroll animation to sections
+        document.querySelectorAll('.featured-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'all 0.6s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

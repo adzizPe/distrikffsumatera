@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - Distrik FF Sumatera</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #ff4757 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid #ff4757;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .logo span {
+            color: #ff4757;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: #ff4757;
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 2000;
+            padding: 2rem;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            text-align: center;
+        }
+
+        .mobile-nav-links li {
+            margin: 1.5rem 0;
+        }
+
+        .mobile-nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5rem;
+            padding: 1rem 2rem;
+            display: block;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-links a:hover,
+        .mobile-nav-links a.active {
+            background: #ff4757;
+            transform: scale(1.05);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 5%;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #ff4757, #ff6b35, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Community Stats */
+        .community-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2.5rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(78, 205, 196, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff4757, #4ecdc4);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            border-color: #4ecdc4;
+            box-shadow: 0 20px 40px rgba(78, 205, 196, 0.2);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #fff;
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+
+        /* Why Join Section */
+        .why-join {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, #ff6b35, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .benefit-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.2);
+            border-color: #ff6b35;
+        }
+
+        .benefit-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .benefit-title {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .benefit-description {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        /* Community Leaders */
+        .leaders-section {
+            margin-bottom: 4rem;
+        }
+
+        .leaders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .leader-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 71, 87, 0.2);
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+        }
+
+        .leader-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 71, 87, 0.2);
+            border-color: #ff4757;
+        }
+
+        .leader-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #ff4757, #ff6b35);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 1.5rem;
+            border: 3px solid #fff;
+        }
+
+        .leader-name {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .leader-role {
+            color: #ff6b35;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .leader-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1rem;
+        }
+
+        .leader-stat {
+            text-align: center;
+        }
+
+        .leader-stat-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #4ecdc4;
+        }
+
+        .leader-stat-label {
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+
+        /* Rules Section */
+        .rules-section {
+            margin-bottom: 4rem;
+        }
+
+        .rules-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        .rules-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .rule-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border-left: 4px solid #ff4757;
+        }
+
+        .rule-number {
+            background: #ff4757;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .rule-text {
+            color: #fff;
+            line-height: 1.5;
+        }
+
+        /* Join CTA */
+        .join-cta {
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.2), rgba(255, 107, 53, 0.2));
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            border: 2px solid #ff4757;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .cta-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .cta-primary {
+            background: linear-gradient(45deg, #ff4757, #ff6b35);
+            color: #fff;
+        }
+
+        .cta-secondary {
+            background: transparent;
+            border: 2px solid #4ecdc4;
+            color: #4ecdc4;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4);
+        }
+
+        .cta-secondary:hover {
+            background: #4ecdc4;
+            color: #000;
+        }
+
+        /* Social Links */
+        .social-section {
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
+            border-color: #ff6b35;
+        }
+
+        .social-icon {
+            font-size: 1.5rem;
+        }
+
+        .social-info {
+            text-align: left;
+        }
+
+        .social-name {
+            font-weight: bold;
+            margin-bottom: 0.2rem;
+        }
+
+        .social-handle {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 2rem 5%;
+            text-align: center;
+            border-top: 2px solid #ff6b35;
+            margin-top: 3rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .community-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .leaders-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rules-list {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .social-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .container {
+                padding: 2rem 5%;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .cta-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .stat-card {
+                padding: 1.5rem 1rem;
+            }
+
+            .benefit-card {
+                padding: 1.5rem;
+            }
+
+            .leader-card {
+                padding: 1.5rem;
+            }
+
+            .rules-container {
+                padding: 2rem;
+            }
+
+            .join-cta {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"> <span>🔥</span> FF <span>SUMATERA</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="list-event.html">List Event</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="community.html" class="active">Community</a></li>
+                <li><a href="store.html">Store</a></li>
+                <li><a href="koderedeem.html">Kode Redeem</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+        <ul class="mobile-nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="list-event.html">List Event</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="community.html" class="active">Community</a></li>
+            <li><a href="store.html">Store</a></li>
+            <li><a href="koderedeem.html">Kode Redeem</a></li>
+        </ul>
+    </div>
+
+    <main class="container">
+        <div class="page-header">
+            <h1 class="page-title">Community FF Sumatera</h1>
+            <p class="page-subtitle">
+                Bergabunglah dengan komunitas Free Fire terbesar di Sumatera! 
+                Temukan teman baru, ikuti turnamen, dan raih prestasi bersama-sama.
+            </p>
+        </div>
+
+        <!-- Community Stats -->
+        <section class="community-stats">
+            <div class="stat-card">
+                <span class="stat-icon">👥</span>
+                <div class="stat-number">15,000+</div>
+                <div class="stat-label">Anggota Aktif</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">🏆</span>
+                <div class="stat-number">250+</div>
+                <div class="stat-label">Turnamen Selesai</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">💰</span>
+                <div class="stat-number">500M+</div>
+                <div class="stat-label">Total Prize Pool</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">⭐</span>
+                <div class="stat-number">4.9/5</div>
+                <div class="stat-label">Rating Komunitas</div>
+            </div>
+        </section>
+
+        <!-- Why Join Section -->
+        <section class="why-join">
+            <h2 class="section-title">Mengapa Bergabung?</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <span class="benefit-icon">🎮</span>
+                    <h3 class="benefit-title">Turnamen Reguler</h3>
+                    <p class="benefit-description">
+                        Ikuti turnamen mingguan dan bulanan dengan prize pool menarik. 
+                        Tingkatkan skill dan raih prestasi!
+                    </p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">👑</span>
+                    <h3 class="benefit-title">Squad Premium</h3>
+                    <p class="benefit-description">
+                        Temukan teammate dengan skill level yang sesuai. 
+                        Bentuk squad impian dan dominasi battlefield!
+                    </p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">📚</span>
+                    <h3 class="benefit-title">Tips & Tutorial</h3>
+                    <p class="benefit-description">
+                        Pelajari strategi dari pro player dan tingkatkan gameplay 
+                        dengan panduan eksklusif dari master.
+                    </p>
+                </div>
+                <div class="benefit-card">
+                    <span class="benefit-icon">🎁</span>
+                    <h3 class="benefit-title">Reward Menarik</h3>
+                    <p class="benefit-description">
+                        Dapatkan skin, diamond, dan hadiah eksklusif melalui 
+                        event dan kompetisi komunitas.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Community Leaders -->
+        <section class="leaders-section">
+            <h2 class="section-title">Leader Board</h2>
+            <div class="leaders-grid">
+                <div class="leader-card">
+                    <div class="leader-avatar">👑</div>
+                    <div class="leader-name">ProGamer_ID</div>
+                    <div class="leader-role">Grandmaster</div>
+                    <div class="leader-stats">
+                        <div class="leader-stat">
+                            <div class="leader-stat-number">95%</div>
+                            <div class="leader-stat-label">Win Rate</div>
+                        </div>
+                        <div class="leader-stat">
+                            <div class="leader-stat-number">50+</div>
+                            <div class="leader-stat-label">Booyah</div>
+                        </div>
+                        <div class="leader-stat">
+                            <div class="leader-stat-number">2.5K</div>
+                            <div class="leader-stat-label">K/D Ratio</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="leader-card">
+                    <div class="leader-avatar">🔥</div>
+                    <div class="leader-name">QueenFF_SMT</div>
+                    <div class="leader-role">Diamond Master</div>
+                    <div class="leader-stats">
+                        <div class="leader-stat">
+                            <div class="leader-stat-number">92%</div>
+                            <div class="leader-stat-label">Win Rate</div>
+                        </div>
+                        <div class="leader-stat">
+                            <div class="leader-stat-number">45+</div>
+                            <div class="leader-stat-label">Booyah</div>
+                        </div>
+                        <div class="leader-stat">
+                            <div class="leader-stat-number">2.3K</div>
+                            <div class="leader-stat-label">K/D Ratio</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="leader-card">
+                    <div class="leader-avatar">⚡</div>
+                    <div class="leader-name">Lightning_99</div>
+                    <div class="leader-role">Heroic Master</div>
+                    <div class="leader-stats">
+                        <div class="leader-stat">
+                            <div class="leader-stat-number">89%</div>
+                            <div class="leader-stat-label">Win Rate</div>
+                        </div>
+                        <div class="leader-stat">
+                            <div class="leader-stat-number">40+</div>
+                            <div class="leader-stat-label">Booyah</div>
+                        </div>
+                        <div class="leader-stat">
+                            <div class="leader-stat-number">2.1K</div>
+                            <div class="leader-stat-label">K/D Ratio</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rules Section -->
+        <section class="rules-section">
+            <h2 class="section-title">Aturan Komunitas</h2>
+            <div class="rules-container">
+                <div class="rules-list">
+                    <div class="rule-item">
+                        <div class="rule-number">1</div>
+                        <div class="rule-text">
+                            Hormati sesama member dan jaga etika dalam berkomunikasi. 
+                            Tidak ada toleransi untuk toxic behavior.
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-number">2</div>
+                        <div class="rule-text">
+                            Dilarang keras menggunakan cheat, hack, atau third-party software. 
+                            Fair play adalah prioritas utama.
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-number">3</div>
+                        <div class="rule-text">
+                            Pastikan menggunakan nama yang sopan dan sesuai. 
+                            Nama yang menyinggung akan diminta untuk diganti.
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-number">4</div>
+                        <div class="rule-text">
+                            Aktif berpartisipasi dalam event dan turnamen komunitas. 
+                            Member inactive akan di-review secara berkala.
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-number">5</div>
+                        <div class="rule-text">
+                            Share informasi positif dan helpful untuk kemajuan bersama. 
+                            Hindari spam dan konten yang tidak relevan.
+                        </div>
+                    </div>
+                    <div class="rule-item">
+                        <div class="rule-number">6</div>
+                        <div class="rule-text">
+                            Laporan pelanggaran harus disertai bukti yang valid. 
+                            Admin akan menindak sesuai tingkat pelanggaran.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Join CTA -->
+        <section class="join-cta">
+            <h2 class="cta-title">Siap Bergabung?</h2>
+            <p class="cta-description">
+                Jangan lewatkan kesempatan menjadi bagian dari komunitas FF terbesar di Sumatera! 
+                Daftar sekarang dan mulai petualangan epic-mu bersama ribuan gamer lainnya.
+            </p>
+            <div class="cta-buttons">
+                <a href="#" class="cta-button cta-primary">Daftar Sekarang</a>
+                <a href="#" class="cta-button cta-secondary">Pelajari Lebih Lanjut</a>
+            </div>
+        </section>
+
+        <!-- Social Links -->
+        <section class="social-section">
+            <h2 class="section-title">Ikuti Kami</h2>
+            <div class="social-links">
+                <a href="#" class="social-link">
+                    <span class="social-icon">📱</span>
+                    <div class="social-info">
+                        <div class="social-name">WhatsApp Group</div>
+                        <div class="social-handle">Join official group</div>
+                    </div>
+                </a>
+                <a href="#" class="social-link">
+                    <span class="social-icon">📺</span>
+                    <div class="social-info">
+                        <div class="social-name">YouTube</div>
+                        <div class="social-handle">@DistrikFFSumatera</div>
+                    </div>
+                </a>
+                <a href="#" class="social-link">
+                    <span class="social-icon">📷</span>
+                    <div class="social-info">
+                        <div class="social-name">Instagram</div>
+                        <div class="social-handle">@distrikff_sumatra</div>
+                    </div>
+                </a>
+                <a href="#" class="social-link">
+                    <span class="social-icon">💬</span>
+                    <div class="social-info">
+                        <div class="social-name">Discord</div>
+                        <div class="social-handle">Distrik FF Community</div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Distrik FF Sumatera. All rights reserved.</p>
+        <p>Unofficial Free Fire community - Not affiliated with Garena</p>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking on a nav link
+        document.querySelectorAll('.mobile-nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobileMenu').classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

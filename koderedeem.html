@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kode Redeem - Distrik FF Sumatera</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #ff4757 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid #ff4757;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+        }
+        .logo span {
+            color: #ff4757;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: #ff4757;
+            transform: translateY(-2px);
+        }
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 2000;
+            padding: 2rem;
+        }
+        .mobile-menu.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .mobile-menu-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        .mobile-nav-links {
+            list-style: none;
+            text-align: center;
+        }
+        .mobile-nav-links li {
+            margin: 1.5rem 0;
+        }
+        .mobile-nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5rem;
+            padding: 1rem 2rem;
+            display: block;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        .mobile-nav-links a:hover,
+        .mobile-nav-links a.active {
+            background: #ff4757;
+            transform: scale(1.05);
+        }
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 5%;
+        }
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .page-title {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #ff4757, #ff6b35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        .page-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        /* Redeem Card */
+        .redeem-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+        .redeem-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .redeem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff4757, #ff6b35);
+        }
+        .redeem-form h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #fff;
+            font-weight: 500;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid rgba(255, 71, 87, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #ff4757;
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+        }
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .btn-redeem {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(45deg, #ff4757, #ff6b35);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-redeem:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4);
+        }
+        .btn-redeem:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        /* Redeem Info */
+        .redeem-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        .info-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+        .info-text {
+            flex: 1;
+        }
+        .info-text strong {
+            color: #ff6b35;
+        }
+        /* Active Codes */
+        .active-codes {
+            margin-bottom: 4rem;
+        }
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, #ff4757, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .codes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .code-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(78, 205, 196, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .code-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(78, 205, 196, 0.2);
+        }
+        .code-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #4ecdc4, #ff6b35);
+        }
+        .code-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .status-active {
+            background: #4ecdc4;
+            color: #000;
+        }
+        .status-expired {
+            background: #ff4757;
+            color: #fff;
+        }
+        .code-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+        .code-value {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .code-value:hover {
+            background: rgba(78, 205, 196, 0.2);
+        }
+        .code-reward {
+            color: #ff6b35;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .code-expire {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        .copy-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: #4ecdc4;
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        .copy-btn:hover {
+            background: #45b7aa;
+            transform: translateY(-2px);
+        }
+        /* History */
+        .history-section {
+            margin-bottom: 4rem;
+        }
+        .history-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #4ecdc4;
+            transition: all 0.3s ease;
+        }
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .history-date {
+            color: #4ecdc4;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .history-code {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        .history-reward {
+            color: #ff6b35;
+            font-weight: 500;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .mobile-menu-btn {
+                display: block;
+            }
+            .page-title {
+                font-size: 2rem;
+            }
+            .redeem-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .codes-grid {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 2rem 5%;
+            }
+        }
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #4ecdc4, #45b7aa);
+            color: #000;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            font-weight: bold;
+            z-index: 3000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span>🔥</span> FF <span>SUMATERA</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="listevent.html">List Event</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="#store">Store</a></li>
+                <li><a href="redeem.html" class="active">Kode Redeem</a></li>
+            </ul>
+            <button class="mobile-menu-btn">☰</button>
+        </nav>
+    </header>
+
+    <div class="mobile-menu">
+        <button class="mobile-menu-close">×</button>
+        <ul class="mobile-nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="listevent.html">List Event</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="community.html">Community</a></li>
+            <li><a href="#store">Store</a></li>
+            <li><a href="redeem.html" class="active">Kode Redeem</a></li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <div class="page-header fade-in">
+            <h1 class="page-title">🎁 Kode Redeem Free Fire</h1>
+            <p class="page-subtitle">Tukarkan kode redeem dan dapatkan hadiah menarik dari Distrik FF Sumatera</p>
+        </div>
+
+        <div class="redeem-section fade-in">
+            <div class="redeem-card redeem-form">
+                <h3>🔑 Redeem Kode</h3>
+                <form id="redeemForm">
+                    <div class="form-group">
+                        <label for="playerId">Player ID Free Fire</label>
+                        <input type="text" id="playerId" placeholder="Masukkan Player ID Anda" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="redeemCode">Kode Redeem</label>
+                        <input type="text" id="redeemCode" placeholder="Masukkan kode redeem" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="server">Server</label>
+                        <select id="server" required>
+                            <option value="">Pilih Server</option>
+                            <option value="indonesia">Indonesia</option>
+                            <option value="malaysia">Malaysia</option>
+                            <option value="singapore">Singapore</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-redeem">Redeem Sekarang</button>
+                </form>
+            </div>
+
+            <div class="redeem-card redeem-info">
+                <h3>📋 Panduan Redeem</h3>
+                <div class="info-item">
+                    <div class="info-icon">1️⃣</div>
+                    <div class="info-text">
+                        Masukkan <strong>Player ID</strong> Free Fire Anda dengan benar
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">2️⃣</div>
+                    <div class="info-text">
+                        Copy kode redeem dari <strong>daftar kode aktif</strong> di bawah
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">3️⃣</div>
+                    <div class="info-text">
+                        Pilih <strong>server</strong> sesuai dengan akun Free Fire Anda
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">4️⃣</div>
+                    <div class="info-text">
+                        Klik <strong>Redeem Sekarang</strong> dan tunggu konfirmasi
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">⚠️</div>
+                    <div class="info-text">
+                        Setiap kode hanya bisa digunakan <strong>1 kali per akun</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="active-codes fade-in">
+            <h2 class="section-title">🎯 Kode Redeem Aktif</h2>
+            <div class="codes-grid">
+                <div class="code-card">
+                    <div class="code-status status-active">AKTIF</div>
+                    <div class="code-title">Welcome Package</div>
+                    <div class="code-value" onclick="copyCode('FFSUMATERA2025')">FFSUMATERA2025</div>
+                    <div class="code-reward">💎 100 Diamond + Skin Pet</div>
+                    <div class="code-expire">Berlaku hingga: 31 Juli 2025</div>
+                    <button class="copy-btn" onclick="copyCode('FFSUMATERA2025')">Copy Kode</button>
+                </div>
+
+                <div class="code-card">
+                    <div class="code-status status-active">AKTIF</div>
+                    <div class="code-title">Championship Reward</div>
+                    <div class="code-value" onclick="copyCode('SUMATERAFFCUP')">SUMATERAFFCUP</div>
+                    <div class="code-reward">🎽 Exclusive Jersey + Emote</div>
+                    <div class="code-expire">Berlaku hingga: 15 Agustus 2025</div>
+                    <button class="copy-btn" onclick="copyCode('SUMATERAFFCUP')">Copy Kode</button>
+                </div>
+
+                <div class="code-card">
+                    <div class="code-status status-active">AKTIF</div>
+                    <div class="code-title">Medan Legends</div>
+                    <div class="code-value" onclick="copyCode('MEDANLEGENDS')">MEDANLEGENDS</div>
+                    <div class="code-reward">🔫 Weapon Skin AK + Parachute</div>
+                    <div class="code-expire">Berlaku hingga: 20 Juli 2025</div>
+                    <button class="copy-btn" onclick="copyCode('MEDANLEGENDS')">Copy Kode</button>
+                </div>
+
+                <div class="code-card">
+                    <div class="code-status status-active">AKTIF</div>
+                    <div class="code-title">Palembang Fighter</div>
+                    <div class="code-value" onclick="copyCode('PLGFIGHTER')">PLGFIGHTER</div>
+                    <div class="code-reward">💰 50 Diamond + Loot Box</div>
+                    <div class="code-expire">Berlaku hingga: 25 Juli 2025</div>
+                    <button class="copy-btn" onclick="copyCode('PLGFIGHTER')">Copy Kode</button>
+                </div>
+
+                <div class="code-card">
+                    <div class="code-status status-active">AKTIF</div>
+                    <div class="code-title">Sumatera Unity</div>
+                    <div class="code-value" onclick="copyCode('SUMATERAUNITY')">SUMATERAUNITY</div>
+                    <div class="code-reward">🎭 Character Skin + Banner</div>
+                    <div class="code-expire">Berlaku hingga: 30 Juli 2025</div>
+                    <button class="copy-btn" onclick="copyCode('SUMATERAUNITY')">Copy Kode</button>
+                </div>
+
+                <div class="code-card">
+                    <div class="code-status status-expired">EXPIRED</div>
+                    <div class="code-title">Grand Opening</div>
+                    <div class="code-value">FFSUMATERA2024</div>
+                    <div class="code-reward">💎 200 Diamond + Elite Pass</div>
+                    <div class="code-expire">Berakhir: 31 Desember 2024</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="history-section fade-in">
+            <h2 class="section-title">📜 Riwayat Redeem Terbaru</h2>
+            <div class="history-item">
+                <div class="history-date">2 Juli 2025 - 14:30</div>
+                <div class="history-code">FFSUMATERA2025</div>
+                <div class="history-reward">Berhasil ditukar: 100 Diamond + Skin Pet</div>
+            </div>
+            <div class="history-item">
+                <div class="history-date">1 Juli 2025 - 20:15</div>
+                <div class="history-code">MEDANLEGENDS</div>
+                <div class="history-reward">Berhasil ditukar: Weapon Skin AK + Parachute</div>
+            </div>
+            <div class="history-item">
+                <div class="history-date">30 Juni 2025 - 16:45</div>
+                <div class="history-code">SUMATERAFFCUP</div>
+                <div class="history-reward">Berhasil ditukar: Exclusive Jersey + Emote</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <span id="toastMessage">Kode berhasil disalin!</span>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const mobileMenuClose = document.querySelector('.mobile-menu-close');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+
+        mobileMenuClose.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+
+        // Copy code function
+        function copyCode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                showToast(`Kode ${code} berhasil disalin!`);
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = code;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast(`Kode ${code} berhasil disalin!`);
+            });
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Redeem form submission
+        document.getElementById('redeemForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const playerId = document.getElementById('playerId').value;
+            const redeemCode = document.getElementById('redeemCode').value;
+            const server = document.getElementById('server').value;
+            
+            if (!playerId || !redeemCode || !server) {
+                showToast('Mohon lengkapi semua field!');
+                return;
+            }
+            
+            // Simulate redeem process
+            const button = document.querySelector('.btn-redeem');
+            button.disabled = true;
+            button.textContent = 'Memproses...';
+            
+            setTimeout(() => {
+                button.disabled = false;
+                button.textContent = 'Redeem Sekarang';
+                
+                // Simulate success/failure
+                const isSuccess = Math.random() > 0.3;
+                
+                if (isSuccess) {
+                    showToast('Kode berhasil ditukar! Cek in-game Anda.');
+                    document.getElementById('redeemForm').reset();
+                } else {
+                    showToast('Kode tidak valid atau sudah digunakan!');
+                }
+            }, 2000);
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Distrik FF Sumatera</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #ff4757 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid #ff4757;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .logo span {
+            color: #ff4757;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: #ff4757;
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 5%;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #ff4757, #ff6b35, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        /* Gallery Categories */
+        .gallery-categories {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #ff4757;
+            border-radius: 25px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: #ff4757;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .gallery-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.3);
+            border-color: #ff6b35;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #ff4757, #ff6b35, #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-image::before {
+            opacity: 1;
+        }
+
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: #fff;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover .play-icon {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        .gallery-content {
+            padding: 1.5rem;
+        }
+
+        .gallery-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .gallery-description {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .gallery-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #ff6b35;
+        }
+
+        .gallery-date {
+            opacity: 0.8;
+        }
+
+        .gallery-views {
+            background: rgba(255, 107, 53, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+        }
+
+        /* Featured Gallery */
+        .featured-gallery {
+            margin-bottom: 4rem;
+        }
+
+        .featured-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 2px solid #ff4757;
+            position: relative;
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #ff4757;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .featured-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #ff4757, #ff6b35, #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            position: relative;
+        }
+
+        .featured-content {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .featured-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .featured-description {
+            font-size: 1.1rem;
+            color: #ccc;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .watch-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #ff4757, #ff6b35);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .watch-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4);
+        }
+
+        /* Stats Section */
+        .gallery-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(78, 205, 196, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.05);
+            border-color: #4ecdc4;
+            box-shadow: 0 15px 30px rgba(78, 205, 196, 0.2);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #fff;
+            opacity: 0.8;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 80%;
+            max-height: 80%;
+            backdrop-filter: blur(20px);
+            border: 2px solid #ff4757;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(45deg, #ff4757, #ff6b35, #4ecdc4);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            margin-bottom: 1rem;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #ff4757;
+            transform: scale(1.2);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 2rem 5%;
+            text-align: center;
+            border-top: 2px solid #ff6b35;
+            margin-top: 3rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-categories {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .featured-image {
+                height: 250px;
+                font-size: 4rem;
+            }
+
+            .featured-title {
+                font-size: 1.5rem;
+            }
+
+            .container {
+                padding: 2rem 5%;
+            }
+
+            .modal-content {
+                max-width: 95%;
+                padding: 1rem;
+            }
+
+            .modal-image {
+                height: 250px;
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span>🔥</span> FF <span>SUMATERA</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="list-event.html">List Event</a></li>
+                <li><a href="gallery.html" class="active">Gallery</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="store.html">Store</a></li>
+                <li><a href="koderedeem.html">Kode Redeem</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1 class="page-title">📸 GALLERY MOMENTS</h1>
+            <p class="page-subtitle">Koleksi foto dan video terbaik dari komunitas FF Sumatera</p>
+        </div>
+
+        <!-- Gallery Stats -->
+        <div class="gallery-stats">
+            <div class="stat-card">
+                <div class="stat-icon">📸</div>
+                <div class="stat-number">1,250+</div>
+                <div class="stat-label">Total Photos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎥</div>
+                <div class="stat-number">320+</div>
+                <div class="stat-label">Epic Videos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-number">150+</div>
+                <div class="stat-label">Victory Moments</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-number">50K+</div>
+                <div class="stat-label">Total Views</div>
+            </div>
+        </div>
+
+        <!-- Featured Gallery -->
+        <div class="featured-gallery">
+            <div class="featured-item">
+                <div class="featured-badge">⭐ FEATURED</div>
+                <div class="featured-image">🏆</div>
+                <div class="featured-content">
+                    <h2 class="featured-title">Sumatera Championship 2024 Highlights</h2>
+                    <p class="featured-description">Saksikan momen-momen epic dari championship terbesar tahun lalu. Pertarungan sengit, strategi brilian, dan kemenangan yang membanggakan!</p>
+                    <a href="#" class="watch-btn">TONTON SEKARANG</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Categories -->
+        <div class="gallery-categories">
+            <button class="category-btn active" data-category="all">Semua</button>
+            <button class="category-btn" data-category="tournament">Tournament</button>
+            <button class="category-btn" data-category="gameplay">Gameplay</button>
+            <button class="category-btn" data-category="community">Community</button>
+            <button class="category-btn" data-category="behind-scenes">Behind Scenes</button>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="gallery-grid">
+            <div class="gallery-item" data-category="tournament">
+                <div class="gallery-image">🏆
+                    <div class="play-icon">▶️</div>
+                </div>
+                <div class="gallery-content">
+                    <h3 class="gallery-title">Championship Finals 2024</h3>
+                    <p class="gallery-description">Pertarungan final yang mendebarkan antara tim terbaik Sumatera. Aksi booyah yang tak terlupakan!</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-date">15 Des 2024</span>
+                        <span class="gallery-views">👀 12.5K views</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="gameplay">
+                <div class="gallery-image">🎯
+                    <div class="play-icon">▶️</div>
+                </div>
+                <div class="gallery-content">
+                    <h3 class="gallery-title">Epic Headshot Compilation</h3>
+                    <p class="gallery-description">Koleksi headshot terbaik dari para pro player FF Sumatera. Skill level maksimal!</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-date">10 Jan 2025</span>
+                        <span class="gallery-views">👀 8.2K views</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="community">
+                <div class="gallery-image">👥
+                    <div class="play-icon">▶️</div>
+                </div>
+                <div class="gallery-content">
+                    <h3 class="gallery-title">Community Gathering 2025</h3>
+                    <p class="gallery-description">Momen kebersamaan anggota komunitas saat gathering offline. Friendship goals!</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-date">20 Jan 2025</span>
+                        <span class="gallery-views">👀 15.3K views</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="tournament">
+                <div class="gallery-image">⚔️
+                    <div class="play-icon">▶️</div>
+                </div>
+                <div class="gallery-content">
+                    <h3 class="gallery-title">Squad Battle Highlights</h3>
+                    <p class="gallery-description">Aksi tim terbaik dalam squad battle mingguan. Strategy dan teamwork yang luar biasa!</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-date">25 Jan 2025</span>
+                        <span class="gallery-views">👀 9.8K views</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="behind-scenes">
+                <div class="gallery-image">🎬
+                    <div class="play-icon">▶️</div>
+                </div>
+                <div class="gallery-content">
+                    <h3 class="gallery-title">Behind The Scenes Tournament</h3>
+                    <p class="gallery-description">Lihat persiapan dan proses dibalik layar tournament besar FF Sumatera.</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-date">28 Jan 2025</span>
+                        <span class="gallery-views">👀 6.7K views</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="gameplay">
+                <div class="gallery-image">💥
+                    <div class="play-icon">▶️</div>
+                </div>
+                <div class="gallery-content">
+                    <h3 class="gallery-title">Clutch Moments Collection</h3>
+                    <p class="gallery-description">Momen-momen clutch terbaik yang membuat jantung berdebar. Skill yang menakjubkan!</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-date">30 Jan 2025</span>
+                        <span class="gallery-views">👀 11.2K views</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="tournament">
+                <div class="gallery-image">🔥
+                    <div class="play-icon">▶️</div>
+                </div>
+                <div class="gallery-content">
+                    <h3 class="gallery-title">Weekly Battle Recap</h3>
+                    <p class="gallery-description">Rekap pertandingan mingguan dengan highlight action terbaik dari setiap match.</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-date">01 Feb 2025</span>
+                        <span class="gallery-views">👀 7.5K views</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="community">
+                <div class="gallery-image">🎉
+                    <div class="play-icon">▶️</div>
+                </div>
+                <div class="gallery-content">
+                    <h3 class="gallery-title">Anniversary Celebration</h3>
+                    <p class="gallery-description">Perayaan anniversary komunitas FF Sumatera dengan berbagai aktivitas seru!</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-date">05 Feb 2025</span>
+                        <span class="gallery-views">👀 18.9K views</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="gameplay">
+                <div class="gallery-image">🎮
+                    <div class="play-icon">▶️</div>
+                </div>
+                <div class="gallery-content">
+                    <h3 class="gallery-title">Pro Tips & Tricks</h3>
+                    <p class="gallery-description">Tutorial dan tips dari pro player untuk meningkatkan skill bermain Free Fire.</p>
+                    <div class="gallery-meta">
+                        <span class="gallery-date">08 Feb 2025</span>
+                        <span class="gallery-views">👀 22.1K views</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="modal-image" id="modalImage">🏆</div>
+            <h3 id="modalTitle">Gallery Title</h3>
+            <p id="modalDescription">Gallery description here...</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Distrik FF Sumatera. All rights reserved.</p>
+        <p>📱 Follow us: Instagram | TikTok | YouTube | Discord</p>
+    </footer>
+
+    <script>
+        // Category filter functionality
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                
+                // Add active class to clicked button
+                btn.classList.add('active');
+                
+                const selectedCategory = btn.getAttribute('data-category');
+                
+                // Filter gallery items
+                galleryItems.forEach(item => {
+                    if (selectedCategory === 'all' || item.getAttribute('data-category') === selectedCategory) {
+                        item.style.display = 'block';
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+                        }, 100);
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const closeBtn = document.querySelector('.close-btn');
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const title = item.querySelector('.gallery-title').textContent;
+                const description = item.querySelector('.gallery-description').textContent;
+                const imageEmoji = item.querySelector('.gallery-image').textContent.trim();
+                
+                modalTitle.textContent = title;
+                modalDescription.textContent = description;
+                modalImage.textContent = imageEmoji;
+                
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Close modal
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Featured video play button
+        document.querySelector('.watch-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Video player akan segera dibuka!');
+        });
+
+        // Add loading animation
+        window.addEventListener('load', () => {
+            galleryItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+
+        // Initialize gallery items with animation
+        galleryItems.forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = 'all 0.3s ease';
+        });
+    </script>
+</body>
+</html>
